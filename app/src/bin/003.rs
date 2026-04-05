@@ -1,6 +1,11 @@
 // ユニットテストについて
 // コンパイルに含まれずcargo testにのみ実行される便利な機能。
 
+// 主にtestの中で用いられる
+// assert!(条件) → 条件が true か見る
+// assert_eq!(左, 右) → 左右が等しいか見る
+// assert_ne!(左, 右) → 左右が等しくないか見る
+
 #[test]
 fn test_hoge() {
     assert_eq!(hoge(150, 30), 30);
