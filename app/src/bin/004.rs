@@ -1,26 +1,39 @@
-// ユニットテストについて
-// コンパイルに含まれずcargo testにのみ実行される便利な機能。
+// コマンドライン引数について
 
-#[test]
-fn test_hoge() {
-    assert_eq!(hoge(150, 30), 30);
-    assert_eq!(hoge(18, 33), 3);
-    assert_eq!(hoge(14, 21), 7);
-}
+use std::env;
+use std::str::FromStr;
 
-fn hoge(mut n: u64, mut m: u64) -> u64 {
-    assert!(n != 0 && m != 0);
-    while m != 0 {
-        if m < n {
-            let t = m;
-            m = n;
-            n = t;
-        }
-        m = m % n;
+fn gcd(mut a: u64, mut b: u64) -> u64 {
+    assert!(a != 0 && b != 0);
+
+    while b != 0 {
+        let remainder = a % b;
+        a = b;
+        b = remainder;
     }
-    n
+
+    a
 }
 
 fn main() {
-    println!("{}", hoge(150, 30));
+    let mut values = Vec::new();
+
+    for arg in env::args().skip(1) {
+        values.push(
+            u64::from_str(&arg)
+                .expect("数値への変換に失敗しました"),
+        );
+    }
+
+    if values.is_empty() {
+        eprintln!("使い方: gcd 数値1 数値2 ...");
+        std::process::exit(1);
+    }
+
+    let mut result = values[0];
+    for value in &values[1..] {
+        result = gcd(result, *value);
+    }
+
+    println!("{:?} の最大公約数は {} です", values, result);
 }
